@@ -1,22 +1,16 @@
-% partial rewrite of the LaTeX2e package for submissions to the
-% Conference on Neural Information Processing Systems (NIPS):
-%
+% LaTeX template for submission to Grace Hopper Conference 2017
+% Adapted from Garnett's NIPS template
+
 % - uses more LaTeX conventions
-% - line numbers at submission time replaced with aligned numbers from
-%   lineno package
 % - \nipsfinalcopy replaced with [final] package option
 % - automatically loads times package for authors
 % - loads natbib automatically; this can be suppressed with the
 %   [nonatbib] package option
 % - adds foot line to first page identifying the conference
-%
-% Roman Garnett (garnett@wustl.edu) and the many authors of
-% nips15submit_e.sty, including MK and drstrip@sandia
-%
-% last revision: August 2016
+
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{nips_2016}[2016/08/08 NIPS 2016 submission/camera-ready style file]
+\ProvidesPackage{ghc}[2016/08/08 NIPS 2016 submission/camera-ready style file]
 
 % declare final option, which creates camera-ready copy
 \newif\if@nipsfinal\@nipsfinalfalse
@@ -90,12 +84,10 @@
 \usepackage[verbose=true,letterpaper]{geometry}
 \AtBeginDocument{
   \newgeometry{
-    textheight=9in,
-    textwidth=5.5in,
-    top=1in,
-    headheight=12pt,
-    headsep=25pt,
-    footskip=30pt
+      left=1.91cm,
+      right=1.91cm,
+      top=1.91cm,
+      bottom=2.54cm
   }
   \@ifpackageloaded{fullpage}
     {\PackageWarning{nips_2016}{fullpage package not allowed! Overwriting formatting.}}
