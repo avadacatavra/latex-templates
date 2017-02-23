@@ -229,28 +229,7 @@
               \labelwidth\leftmarginvi
               \advance\labelwidth-\labelsep}
 
-% create title
-\providecommand{\maketitle}{}
-\renewcommand{\maketitle}{%
-  \par
-  \begingroup
-    \renewcommand{\thefootnote}{\fnsymbol{footnote}}
-    % for perfect author name centering
-    \renewcommand{\@makefnmark}{\hbox to \z@{$^{\@thefnmark}$\hss}}
-    % The footnote-mark was overlapping the footnote-text,
-    % added the following to fix this problem               (MK)
-    \long\def\@makefntext##1{%
-      \parindent 1em\noindent
-      \hbox to 1.8em{\hss $\m@th ^{\@thefnmark}$}##1
-    }
-    \thispagestyle{empty}
-    \@maketitle
-    \@thanks
-    \@notice
-  \endgroup
-  \let\maketitle\relax
-  \let\thanks\relax
-}
+
 
 % rules for title box at top of first page
 \newcommand{\@toptitlebar}{
@@ -319,6 +298,17 @@
     \textbf{Bio} \@bio
 }
 
+%define header
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+
+%TODO align anita borg logo
+\fancypagestyle{fancyplain} { %
+    \fancyhead[L]{\includegraphics[width=3cm]{ghclogo.png}}
+    \fancyhead[R]{\hfill\includegraphics[width=3cm]{anita_borg_logo.png}}
+    \renewcommand{\headrulewidth}{0pt}
+}
+\pagestyle{fancyplain}
 
 
 % add conference notice to bottom of first page
@@ -330,6 +320,7 @@
     \footnotesize\@noticestring%
   \end@float%
 }
+
 
 % abstract styling
 \renewenvironment{abstract}%
