@@ -12,12 +12,6 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{ghc}[2016/08/08 NIPS 2016 submission/camera-ready style file]
 
-% declare final option, which creates camera-ready copy
-\newif\if@nipsfinal\@nipsfinalfalse
-\DeclareOption{final}{
-  \@nipsfinaltrue
-}
-
 % declare nonatbib option, which does not load natbib in case of
 % package clash (users can pass options to natbib via
 % \PassOptionsToPackage)
@@ -32,49 +26,6 @@
 \renewcommand{\rmdefault}{ptm}
 \renewcommand{\sfdefault}{phv}
 
-% change this every year for notice string at bottom
-\newcommand{\@nipsordinal}{30th}
-\newcommand{\@nipsyear}{2016}
-\newcommand{\@nipslocation}{Barcelona, Spain}
-
-% handle tweaks for camera-ready copy vs. submission copy
-\if@nipsfinal
-  \newcommand{\@noticestring}{%
-    \@nipsordinal\/ Conference on Neural Information Processing Systems
-    (NIPS \@nipsyear), \@nipslocation.%
-  }
-\else
-  \newcommand{\@noticestring}{%
-    Submitted to \@nipsordinal\/ Conference on Neural Information
-    Processing Systems (NIPS \@nipsyear). Do not distribute.%
-  }
-
-  % fix incompatibilities between lineno and amsmath, if required, by
-  % transparently wrapping linenomath environments around amsmath
-  % environments
-  \AtBeginDocument{%
-    \@ifpackageloaded{amsmath}{%
-      \newcommand*\patchAmsMathEnvironmentForLineno[1]{%
-        \expandafter\let\csname old#1\expandafter\endcsname\csname #1\endcsname
-        \expandafter\let\csname oldend#1\expandafter\endcsname\csname end#1\endcsname
-        \renewenvironment{#1}%
-          {\linenomath\csname old#1\endcsname}%
-          {\csname oldend#1\endcsname\endlinenomath}%
-      }%
-      \newcommand*\patchBothAmsMathEnvironmentsForLineno[1]{%
-        \patchAmsMathEnvironmentForLineno{#1}%
-        \patchAmsMathEnvironmentForLineno{#1*}%
-      }%
-      \patchBothAmsMathEnvironmentsForLineno{equation}%
-      \patchBothAmsMathEnvironmentsForLineno{align}%
-      \patchBothAmsMathEnvironmentsForLineno{flalign}%
-      \patchBothAmsMathEnvironmentsForLineno{alignat}%
-      \patchBothAmsMathEnvironmentsForLineno{gather}%
-      \patchBothAmsMathEnvironmentsForLineno{multline}%
-    }{}
-  }
-\fi
-
 % load natbib unless told otherwise
 \if@natbib
   \RequirePackage{natbib}
@@ -84,14 +35,11 @@
 \usepackage[verbose=true,letterpaper]{geometry}
 \AtBeginDocument{
   \newgeometry{
-      left=1.91cm,
-      right=1.91cm,
       top=1.91cm,
-      bottom=2.54cm
+      bottom=2.54cm,
+      margin=1.91cm
   }
-  \@ifpackageloaded{fullpage}
-    {\PackageWarning{nips_2016}{fullpage package not allowed! Overwriting formatting.}}
-    {}
+  {}
 }
 
 \widowpenalty=10000
@@ -171,16 +119,16 @@
 \renewcommand{\textfraction     }{0.1}
 \renewcommand{\floatpagefraction}{0.7}
 
-\newlength{\@nipsabovecaptionskip}\setlength{\@nipsabovecaptionskip}{7\p@}
-\newlength{\@nipsbelowcaptionskip}\setlength{\@nipsbelowcaptionskip}{\z@}
+\newlength{\@ghcabovecaptionskip}\setlength{\@ghcabovecaptionskip}{7\p@}
+\newlength{\@ghcbelowcaptionskip}\setlength{\@ghcbelowcaptionskip}{\z@}
 
-\setlength{\abovecaptionskip}{\@nipsabovecaptionskip}
-\setlength{\belowcaptionskip}{\@nipsbelowcaptionskip}
+\setlength{\abovecaptionskip}{\@ghcabovecaptionskip}
+\setlength{\belowcaptionskip}{\@ghcbelowcaptionskip}
 
 % swap above/belowcaptionskip lengths for tables
 \renewenvironment{table}
-  {\setlength{\abovecaptionskip}{\@nipsbelowcaptionskip}%
-   \setlength{\belowcaptionskip}{\@nipsabovecaptionskip}%
+  {\setlength{\abovecaptionskip}{\@ghcbelowcaptionskip}%
+   \setlength{\belowcaptionskip}{\@ghcabovecaptionskip}%
    \@float{table}}
   {\end@float}
 
@@ -231,24 +179,12 @@
 
 
 
-% rules for title box at top of first page
-\newcommand{\@toptitlebar}{
-  \hrule height 4\p@
-  \vskip 0.25in
-  \vskip -\parskip%
-}
-\newcommand{\@bottomtitlebar}{
-  \vskip 0.29in
-  \vskip -\parskip
-  \hrule height 1\p@
-  \vskip 0.09in%
-}
 
 \newcommand{\organization}[1]{\gdef\@organization{#1}}%
 \newcommand{\email}[1]{\gdef\@email{#1}}%
 
 
-% create title (includes both anonymized and non-anonymized versions)
+% create title
 \providecommand{\@maketitle}{}
 \renewcommand{\@maketitle}{
     \vbox{
@@ -261,7 +197,7 @@
         {\large\@author}\\
         \@organization\\
         \texttt\@email
-    }
+    }\vspace{24pt}
 
 }
 
@@ -287,7 +223,7 @@
     Audience: [\@audience]\\
 
 }
-%add participation statement TODO
+%add participation statement
 \newcommand{\participation}{
     \textbf{Participation Statement}\\
     I will attend the conference if accepted.\par
@@ -302,24 +238,18 @@
 \usepackage{fancyhdr}
 \usepackage{graphicx}
 
-%TODO align anita borg logo
+%TODO align anita borg logo...i wonder if it's got to do with page width
 \fancypagestyle{fancyplain} { %
-    \fancyhead[L]{\includegraphics[width=3cm]{ghclogo.png}}
-    \fancyhead[R]{\hfill\includegraphics[width=3cm]{anita_borg_logo.png}}
+    \fancyheadoffset[R]{0pt}
+    \fancyhead[L]{\includegraphics[height=1cm]{ghclogo.png}}
+    \fancyhead[R]{\hspace{3cm}\includegraphics[height=1cm]{anita_borg_logo.png}}
     \renewcommand{\headrulewidth}{0pt}
 }
 \pagestyle{fancyplain}
 
+%increase column separation
+\setlength\columnsep{.4in}
 
-% add conference notice to bottom of first page
-\newcommand{\ftype@noticebox}{8}
-\newcommand{\@notice}{%
-  % give a bit of extra room back to authors on first page
-  \enlargethispage{2\baselineskip}%
-  \@float{noticebox}[b]%
-    \footnotesize\@noticestring%
-  \end@float%
-}
 
 
 % abstract styling
